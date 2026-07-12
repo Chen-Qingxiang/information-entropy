@@ -3,295 +3,38 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Information Entropy Explorer</title>
-    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="refresh" content="0; url=https://chen-qingxiang.github.io/complexity/information-entropy/">
+    <link rel="canonical" href="https://chen-qingxiang.github.io/complexity/information-entropy/">
+    <title>Information Entropy Explorer moved</title>
+    <style>
+      body {
+        margin: 0;
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        background: #f6f7f2;
+        color: #17211f;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(620px, calc(100% - 32px));
+      }
+
+      a {
+        color: #1d766c;
+        font-weight: 700;
+      }
+    </style>
+    <script>
+      window.location.replace("https://chen-qingxiang.github.io/complexity/information-entropy/");
+    </script>
   </head>
   <body>
-    <header class="site-header">
-      <div>
-        <p class="eyebrow">Shannon information in bits</p>
-        <h1>Information Entropy Explorer</h1>
-        <p class="lead">
-          Explore surprise, uncertainty, probability distributions, generated sequences,
-          and the limits of simple compressibility estimates.
-        </p>
-      </div>
-      <nav aria-label="Page sections">
-        <a href="#single-event">Single event</a>
-        <a href="#coin">Coin</a>
-        <a href="#distribution">Distribution</a>
-        <a href="#sequence">Sequence</a>
-        <a href="#compressibility">Compressibility</a>
-        <a href="#notes">Notes</a>
-      </nav>
-    </header>
-
     <main>
-      <section class="panel" id="single-event">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">1</p>
-            <h2>Single Event Information</h2>
-          </div>
-          <p class="formula">I(x) = -log<sub>2</sub> p(x)</p>
-        </div>
-
-        <div class="two-column">
-          <div class="controls">
-            <label for="eventP">Probability p</label>
-            <input id="eventP" type="range" min="0.001" max="1" step="0.001" value="0.5">
-            <div class="stats-grid">
-              <div>
-                <span class="stat-label">p(x)</span>
-                <strong id="eventPValue">0.500</strong>
-              </div>
-              <div>
-                <span class="stat-label">Information</span>
-                <strong><span id="eventInfoBits">1.000</span> bits</strong>
-              </div>
-            </div>
-            <div class="button-row" aria-label="Information examples">
-              <button type="button" data-event-p="1">p = 1</button>
-              <button type="button" data-event-p="0.5">p = 1/2</button>
-              <button type="button" data-event-p="0.25">p = 1/4</button>
-              <button type="button" data-event-p="0.125">p = 1/8</button>
-            </div>
-            <p class="short-note">
-              Rare events carry more information when they happen. Certain events carry no surprise.
-              Here, information means surprise or uncertainty reduction, not meaning or importance.
-            </p>
-          </div>
-          <canvas id="infoPlot" width="640" height="320" aria-label="Information content curve"></canvas>
-        </div>
-      </section>
-
-      <section class="panel" id="coin">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">2</p>
-            <h2>Coin Entropy Explorer</h2>
-          </div>
-          <p class="formula">H(p) = -p log<sub>2</sub>p - (1-p)log<sub>2</sub>(1-p)</p>
-        </div>
-
-        <div class="two-column">
-          <div class="controls">
-            <label for="coinP">P(heads)</label>
-            <input id="coinP" type="range" min="0" max="1" step="0.001" value="0.5">
-            <div class="stats-grid three">
-              <div>
-                <span class="stat-label">Heads</span>
-                <strong id="coinHeadsValue">0.500</strong>
-              </div>
-              <div>
-                <span class="stat-label">Tails</span>
-                <strong id="coinTailsValue">0.500</strong>
-              </div>
-              <div>
-                <span class="stat-label">Entropy</span>
-                <strong><span id="coinEntropyValue">1.000</span> bits</strong>
-              </div>
-            </div>
-            <div class="button-row" aria-label="Coin presets">
-              <button type="button" data-coin-p="0.5">fair coin</button>
-              <button type="button" data-coin-p="0.8">biased coin</button>
-              <button type="button" data-coin-p="0.99">almost certain</button>
-            </div>
-            <p class="short-note">
-              A fair coin is maximally uncertain, so its entropy is 1 bit. A deterministic coin has
-              entropy 0 because the next toss is predictable.
-            </p>
-          </div>
-          <canvas id="coinPlot" width="640" height="320" aria-label="Coin entropy curve"></canvas>
-        </div>
-      </section>
-
-      <section class="panel" id="distribution">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">3</p>
-            <h2>Multi-Symbol Distribution Entropy</h2>
-          </div>
-          <p class="formula">H(X) = - &sum;<sub>i</sub> p<sub>i</sub> log<sub>2</sub> p<sub>i</sub></p>
-        </div>
-
-        <div class="two-column">
-          <div class="controls">
-            <div class="weight-list" id="weightControls" aria-label="Symbol weights">
-              <div class="weight-row" data-symbol="A">
-                <span class="symbol-chip symbol-a">A</span>
-                <input id="weightA" type="range" min="0" max="100" step="1" value="25">
-                <input id="weightANumber" class="number-input" type="number" min="0" max="1000" step="1" value="25" aria-label="Weight for A">
-                <span id="probA" class="probability-value">25.0%</span>
-              </div>
-              <div class="weight-row" data-symbol="B">
-                <span class="symbol-chip symbol-b">B</span>
-                <input id="weightB" type="range" min="0" max="100" step="1" value="25">
-                <input id="weightBNumber" class="number-input" type="number" min="0" max="1000" step="1" value="25" aria-label="Weight for B">
-                <span id="probB" class="probability-value">25.0%</span>
-              </div>
-              <div class="weight-row" data-symbol="C">
-                <span class="symbol-chip symbol-c">C</span>
-                <input id="weightC" type="range" min="0" max="100" step="1" value="25">
-                <input id="weightCNumber" class="number-input" type="number" min="0" max="1000" step="1" value="25" aria-label="Weight for C">
-                <span id="probC" class="probability-value">25.0%</span>
-              </div>
-              <div class="weight-row" data-symbol="D">
-                <span class="symbol-chip symbol-d">D</span>
-                <input id="weightD" type="range" min="0" max="100" step="1" value="25">
-                <input id="weightDNumber" class="number-input" type="number" min="0" max="1000" step="1" value="25" aria-label="Weight for D">
-                <span id="probD" class="probability-value">25.0%</span>
-              </div>
-            </div>
-
-            <div class="stats-grid three">
-              <div>
-                <span class="stat-label">Entropy</span>
-                <strong><span id="distEntropyValue">2.000</span> bits</strong>
-              </div>
-              <div>
-                <span class="stat-label">Maximum</span>
-                <strong><span id="distMaxEntropyValue">2.000</span> bits</strong>
-              </div>
-              <div>
-                <span class="stat-label">Normalized</span>
-                <strong id="distNormalizedValue">1.000</strong>
-              </div>
-            </div>
-
-            <div class="button-row" aria-label="Distribution presets">
-              <button type="button" data-dist-preset="uniform">uniform</button>
-              <button type="button" data-dist-preset="concentrated">concentrated</button>
-              <button type="button" data-dist-preset="two">two-symbol</button>
-              <button type="button" data-dist-preset="random">random</button>
-            </div>
-            <p class="short-note">
-              Entropy is highest when probability is evenly spread. It depends on the probabilities,
-              not on whether the labels are A, B, C, or D.
-            </p>
-          </div>
-          <canvas id="distributionPlot" width="640" height="320" aria-label="Distribution bar chart"></canvas>
-        </div>
-      </section>
-
-      <section class="panel" id="sequence">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">4</p>
-            <h2>Random Sequence Generator</h2>
-          </div>
-          <p class="formula">samples from the current A/B/C/D distribution</p>
-        </div>
-
-        <div class="control-strip">
-          <label for="sequenceLength">Length</label>
-          <input id="sequenceLength" class="number-input" type="number" min="1" max="2000" step="1" value="160">
-          <label for="seedInput">Seed</label>
-          <input id="seedInput" class="seed-input" type="text" value="entropy">
-          <button id="randomSeedButton" type="button">randomize seed</button>
-          <button id="generateButton" type="button">regenerate</button>
-        </div>
-
-        <div class="sequence-layout">
-          <div>
-            <pre id="sequenceText" class="sequence-text" aria-label="Generated sequence"></pre>
-            <div id="sequenceBlocks" class="sequence-blocks" aria-label="Generated sequence as colored squares"></div>
-          </div>
-          <div class="compact-card">
-            <h3>Observed symbols</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Symbol</th>
-                  <th>Count</th>
-                  <th>Empirical p</th>
-                </tr>
-              </thead>
-              <tbody id="observedTable"></tbody>
-            </table>
-            <p class="metric-line">Empirical entropy: <strong><span id="empiricalEntropyValue">0.000</span> bits</strong></p>
-          </div>
-        </div>
-        <p class="short-note">
-          Entropy belongs to a distribution. A finite generated sequence estimates it, and longer
-          sequences usually move the empirical entropy closer to the theoretical value.
-        </p>
-      </section>
-
-      <section class="panel" id="compressibility">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">5</p>
-            <h2>Entropy and Compressibility</h2>
-          </div>
-          <p class="formula">frequency entropy is useful, but it misses some structure</p>
-        </div>
-
-        <div id="compressionExamples" class="example-grid" aria-label="Compression examples"></div>
-
-        <div class="custom-string">
-          <label for="customString">Try a custom string</label>
-          <textarea id="customString" rows="3">ABABABABABABABAB</textarea>
-          <div class="stats-grid three">
-            <div>
-              <span class="stat-label">Length</span>
-              <strong id="customLengthValue">16</strong>
-            </div>
-            <div>
-              <span class="stat-label">Unique symbols</span>
-              <strong id="customUniqueValue">2</strong>
-            </div>
-            <div>
-              <span class="stat-label">Entropy</span>
-              <strong><span id="customEntropyValue">1.000</span> bits</strong>
-            </div>
-          </div>
-          <div id="customFrequencyTable" class="frequency-table"></div>
-        </div>
-
-        <p class="short-note">
-          Single-symbol entropy does not capture all pattern structure. For example, ABABABABAB and
-          AABBBABAAB can have similar symbol frequencies while one has a clearer repeating pattern.
-          A real compressor uses more than single-character counts.
-        </p>
-      </section>
-
-      <section class="panel" id="notes">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">6</p>
-            <h2>Notes and Interpretation</h2>
-          </div>
-        </div>
-
-        <div class="notes-grid">
-          <div>
-            <h3>What entropy says</h3>
-            <ul>
-              <li>Entropy measures average uncertainty or average information per symbol.</li>
-              <li>With log base 2, the unit is bits.</li>
-              <li>It is about probability distributions, not labels or meanings.</li>
-              <li>It is central to communication, coding, compression, and noise.</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Common confusions</h3>
-            <ul>
-              <li>High entropy does not mean important.</li>
-              <li>Low entropy does not mean bad.</li>
-              <li>Randomness and complexity are related, but not identical.</li>
-              <li>A random string can be hard to compress and still carry no useful message.</li>
-              <li>A meaningful sentence can contain redundancy and have lower entropy.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      <h1>Information Entropy Explorer has moved</h1>
+      <p>Open it in the consolidated Complexity Playground:</p>
+      <p><a href="https://chen-qingxiang.github.io/complexity/information-entropy/">https://chen-qingxiang.github.io/complexity/information-entropy/</a></p>
     </main>
-
-    <footer>
-      <p>Static demo for GitHub Pages: <code>chen-qingxiang.github.io/information-entropy/</code></p>
-    </footer>
-
-    <script src="script.js"></script>
   </body>
 </html>
